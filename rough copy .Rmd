@@ -1,0 +1,308 @@
+---
+title: "Untitled"
+author: "YUE LIU"
+date: "10/17/2020"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+data <- read.csv("~/Desktop/sta304 ps2/gss.csv")
+
+#install.packages('lmtest')
+reg <- lm(feelings_life ~ age + total_children + age_first_child + sex + province +  marital_status + aboriginal +  education + living_arrangement  +average_hours_worked + self_rated_health + self_rated_mental_health + income_respondent + occupation, data = data)
+
+
+```
+# orginal model 
+
+```{r}
+reg11 <- lm(feelings_life ~ total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked + self_rated_health + self_rated_mental_health +income_respondent + occupation, data = data)
+
+library(lmtest)
+lrtest(reg,reg11)
+
+```
+#do not delete age 
+
+
+
+```{r}
+
+reg <- lm(feelings_life ~ age + total_children + age_first_child + sex + province +  marital_status + aboriginal +  education + living_arrangement  +average_hours_worked + self_rated_health + self_rated_mental_health + income_respondent + occupation, data = data)
+
+
+
+reg22 <- lm(feelings_life ~ age+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked + self_rated_health + self_rated_mental_health +income_respondent + occupation, data = data)
+
+library(lmtest)
+lrtest(reg,reg22)
+```
+# do not delete total children 
+
+
+
+```{r}
+reg <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+
+reg33 <- lm(feelings_life ~ age+total_children+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+library(lmtest)
+lrtest(reg,reg33)
+```
+#age first child has NA
+
+
+
+
+```{r}
+reg <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+
+reg44 <- lm(feelings_life ~ age+total_children+age_first_child+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+library(lmtest)
+lrtest(reg,reg44)
+
+```
+#can delete sex 
+
+
+
+```{r}
+reg <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+
+reg55 <- lm(feelings_life ~ age+total_children+age_first_child+sex+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+library(lmtest)
+lrtest(reg,reg55)
+
+```
+#can delete province
+
+```{r}
+reg <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+
+reg66 <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+library(lmtest)
+lrtest(reg,reg66)
+
+```
+# mariage has NA
+
+
+```{r}
+reg <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+
+reg77 <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+library(lmtest)
+lrtest(reg,reg77)
+
+```
+# aboriginal has NA
+
+
+```{r}
+reg <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+
+reg88 <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+library(lmtest)
+lrtest(reg,reg88)
+
+```
+#education has NA
+
+
+
+```{r}
+reg <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+
+reg99 <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+library(lmtest)
+lrtest(reg,reg99)
+
+```
+#can delete living_arrangement
+
+
+
+
+
+```{r}
+reg <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+
+reg111 <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+library(lmtest)
+lrtest(reg,reg111)
+
+```
+# average_hours_worked has NA
+
+
+
+
+
+
+```{r}
+reg <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+
+reg222 <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_mental_health+income_respondent+occupation, data = data)
+library(lmtest)
+lrtest(reg,reg222)
+```
+#self health has NA
+
+
+
+```{r}
+reg <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+
+reg333<- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+income_respondent+occupation, data = data)
+
+library(lmtest)
+lrtest(reg,reg333)
+```
+#self mental health NA
+
+
+
+
+
+
+
+```{r}
+reg <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+
+reg444<- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+occupation, data = data)
+
+library(lmtest)
+lrtest(reg,reg444)
+```
+#income could not be delete 
+
+
+
+```{r}
+reg <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+
+reg555<- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent, data = data)
+
+library(lmtest)
+lrtest(reg,reg555)
+```
+
+
+
+
+
+```{r}
+reg <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data)
+
+
+reg_final<-lm(feelings_life ~ age+total_children+age_first_child+marital_status+aboriginal+education+average_hours_worked+self_rated_health+self_rated_mental_health+occupation, data = data)
+
+
+
+library(lmtest)
+lrtest(reg,reg_final)
+
+reg_final12<-lm(feelings_life ~ age+total_children+age_first_child+marital_status+self_rated_health+self_rated_mental_health, data = data)
+summary(reg_final12)
+```
+
+
+#graph of sex
+```{r, warning = False}
+library(tidyverse)
+
+ggplot(data = data, aes(x=`feelings_life`, color = `sex`)) + geom_histogram() 
+
+
+```
+
+#graph of province
+```{r, warning=FALSE}
+
+
+
+library(tidyverse)
+
+
+ggplot(data=data, aes(y =`feelings_life`))+geom_bar() + geom_bar(aes(fill = `province`)) + labs(title="different province in feelings_life")
+
+province_model <- lm(data$feelings_life~data$province)
+summary(province_model)
+
+
+```
+
+#graph of mariginal status
+```{r}
+
+library(tidyverse)
+ggplot(data=data, aes(y =`feelings_life`))+geom_bar() + geom_bar(aes(fill = `marital_status`)) + labs(title="different province in feelings_life")
+
+marriage_model <- lm(data$feelings_life~data$marital_status)
+summary(marriage_model)
+
+
+```
+
+#graph of aboriginal
+```{r}
+library(tidyverse)
+ggplot(data = data, aes(x=`feelings_life`, color = `aboriginal`)) + geom_histogram() 
+
+```
+
+#graph of marital_status
+```{r}
+library(tidyverse)
+ggplot(data = data, aes(x=`marital_status`, fill = `feelings_life`)) + geom_bar() + labs(title = "different feelings life outcome of different marital status", y= "feelings life")
+```
+#graph of education
+```{r}
+library(tidyverse)
+ggplot(data = data, aes(x=`feelings_life`, fill = education)) + geom_bar() + labs(title = "different feelings life outcome of different level of education")
+education_model <- lm(data$feelings_life ~ data$education)
+summary(education_model)
+```
+We want to find out whether different levels of education have a linear relationship with the feelings of life index. Firstly, we drew a barplot  by these two variables, from the graph we can see that each levels of education are having approximately the same proportion in each feelings of life index. So we initially concluded that it should not have much influence on people's feelings of life index. Next, we offered a linear regression model of these two variables and look at their summary result. Although the p-value of the total model is less than 0.05, nearly half of the variables' p-value in the data is larger than 0.05. In order to find the best fitted model, we dicided to drop variable "education" from our final dataset.
+
+#graph of living_arrangement
+```{r}
+library(tidyverse)
+ggplot(data = data, aes(x=`feelings_life`, fill = `living_arrangement`)) + geom_bar() + labs(title = "different feelings life outcome of different type of living arrangement")
+living_model <- lm(data$feelings_life ~ data$living_arrangement)
+summary(living_model)
+```
+We want to find out whether different type of living arrangement have a linear relationship with the feelings of life index. Firstly, we drew a barplot by these two variables, from the graph we can see that each types of living arrangement are having approximately the same proportion in each feelings of life index. So we initially concluded that it should not have much influence on people's feelings of life index. Next, we offered a linear regression model of these two variables and look at their summary result. Although the p-value of the total model is less than 0.05, many of the variables' p-value in the data is larger than 0.05. In order to find the best fitted model, we dicided to drop variable "living_arrangement" from our final dataset.
+
+#graph of average hours worked
+```{r}
+library(tidyverse)
+ggplot(data = data, aes(x=`feelings_life`, fill = `average_hours_worked`)) + geom_bar() + labs(title = "different feelings life outcome of different average hours worked")
+```
+We want to find out whether different average hours worked have a linear relationship with the feelings of life index. Firstly, we drew a barplot by these two variables, from the graph we can see that each types of average hours worked are having approximately the same proportion in each feelings of life index, and with the large amount of "NA", in order to find the best fitted model, we dicided to drop variable "average_hours_worked" from our final dataset.
+
+#graph of partner main activity
+```{r}
+library(tidyverse)
+ggplot(data = data, aes(x=`feelings_life`, fill = `partner_main_activity`)) + geom_bar() + labs(title = "different feelings life outcome of different type of partner main activity")
+partner_model <- lm(data$feelings_life ~ data$partner_main_activity)
+summary(partner_model)
+```
+We want to find out whether different type of partner main activity have a linear relationship with the feelings of life index. Firstly, we drew a barplot by these two variables, from the graph we can see that each types of partner main activity are having approximately the same proportion in each feelings of life index. So we initially concluded that it should not have much influence on people's feelings of life index. Next, we offered a linear regression model of these two variables and look at their summary result. Although the p-value of the total model is less than 0.05, many of the variables' p-value in the data is larger than 0.05, and with the large amount of "NA", in order to find the best fitted model, we dicided to drop variable "partner_main_activity" from our final dataset.

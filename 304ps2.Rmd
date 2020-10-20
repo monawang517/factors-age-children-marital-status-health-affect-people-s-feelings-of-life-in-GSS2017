@@ -1,0 +1,16 @@
+---
+title: "sta304 ps2"
+author: "Yiqi Wang"
+date: "18/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Abstract:
+The pursuit of a person's life is to obtain happiness and be satisfied with their life, so increasing our overall life satisfaction is something that we are always striving for, however, there are many factors related to our perception of life so what factors affect people’s feelings about their life as a whole is what we want to research in this project. Using the GSS(General Social Survey): Families dataset of the year 2017, we built a linear regression model that can predict the score of people's feelings about their life as a whole using a given set of attributes (age, health, mental health…). If someone is in the doldrums of his/her life period, he/she can try to change some of these attributes to change his/her current state of life and increase the score of his/her feelings about life.
+
+
+

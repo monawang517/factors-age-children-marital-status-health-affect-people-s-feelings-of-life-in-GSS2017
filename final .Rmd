@@ -1,0 +1,175 @@
+---
+title: "final"
+author: "YUE LIU"
+date: "10/18/2020"
+output: html_document
+---
+
+#orginal data: select data
+```{r}
+library(tidyverse)
+data <- read.csv("/Users/yue/Desktop/STA304PS2/gss.csv")
+glimpse(data)
+
+
+#choose data 
+data1 <- data %>% select(2,3,5,11,12,19,22,23,28,30,38,41,42,48,49)
+
+reg <- lm(feelings_life ~ age + total_children + age_first_child + sex + province + marital_status + aboriginal + education + living_arrangement + average_hours_worked + self_rated_health + self_rated_mental_health + income_respondent + occupation, data = data1)
+
+summary(reg)
+
+```
+
+
+####Firstly, we use the ratio likelihood test to test the variables 
+
+#varibles that could not be delete: age, total number of children,income  
+```{r}
+#install.packages('lmtest')
+
+library(lmtest)
+
+reg_age_delete <- lm(feelings_life ~ total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked + self_rated_health + self_rated_mental_health +income_respondent + occupation, data = data1)
+
+
+reg_total_children_delete <- lm(feelings_life ~ age+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked + self_rated_health + self_rated_mental_health +income_respondent + occupation, data = data1)
+
+
+reg_income_delete<- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+occupation, data = data1)
+
+lrtest(reg,reg_age_delete)
+
+lrtest(reg,reg_total_children_delete)
+
+lrtest(reg,reg_income_delete)
+
+
+
+```
+Age,total number of children,income could not be delete because their p-value of the ratio likelihood test are all greater than 0.05 which means that the reg_age_delete, reg_total_children_delete, reg_income_delete are worse than the orginal data. This indicates that in our best fit model, we should contain age, total number of children and income. 
+
+
+#variables that could be delete: sex, living_arrangement, province
+```{r}
+
+library(lmtest)
+
+
+reg_sex_delete <- lm(feelings_life ~ age+total_children+age_first_child+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data1)
+
+
+reg_delete_living_arrangement <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data1)
+
+
+reg_delete_province<- lm(feelings_life ~ age+total_children+age_first_child+sex+marital_status+aboriginal+education+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data1)
+
+
+
+lrtest(reg,reg_sex_delete)
+lrtest(reg,reg_delete_living_arrangement)
+lrtest(reg,reg_delete_province)
+
+
+
+
+
+```
+Sex, living_arrangement,province could be delete because their p-value are both smaller than 0.05 which means that the reg_sex_delete, reg_delete_living_arrangement are better than the orginal data according to the ratio likelihood test. This indicates that in our best fit model, we may consider to not contain sex, living_arrangement, province. 
+
+
+## Variables that contain NA data values:age_first_child, marital_status, aboriginal,education,average_hours_worked,self health, self mental health,occupation
+In fact, Many variables (i.e age_first_child, marital_status, aboriginal,education,average_hours_worked,self health, self mental health,occupation) in our data set that contains special meaning of NA that could not be removed. It results in the inconsistency in the quantity of various variables and is unable to run the likelihood ratio test in order to do variable selection. We decide to keep those variables in our best fit model temporataly. We will use other method to decide whether or not choose these variables in our best fit model. 
+
+
+
+# To conclude the above info, the temporary best fit model after ratio likelihood test:
+```{r}
+
+library(lmtest)
+reg <- lm(feelings_life ~ age+total_children+age_first_child+sex+province+marital_status+aboriginal+education+living_arrangement+average_hours_worked+self_rated_health+self_rated_mental_health+income_respondent+occupation, data = data1)
+
+
+reg_finaltem<-lm(feelings_life ~ age+total_children+age_first_child+marital_status+aboriginal+education+average_hours_worked+self_rated_health+self_rated_mental_health+occupation, data = data1)
+
+lrtest(reg, reg_finaltem)
+summary(reg_finaltem)
+```
+
+We deleted the sex, living_arrangement, province varibles and named it as the reg_finaltem. 
+From the ratio likelihood test, we could see the p-value is less than 0.05 which means the second model(the reg_finaltem) is better than the original model which is also a sign that help us to make sure the model is temporary the best fit. 
+
+
+
+#use the summary of reg_finaltem to deal with the NA terms by using two steps: 
+## first step is using the summary of the reg_finaltem's p-value
+## secondly, graph and analyse each of the variable that has p-value larger than 0.05 in reg_finaltem separately.
+
+
+```{r}
+summary(reg_finaltem)
+
+reg_finaltem<-lm(feelings_life ~ age+total_children+age_first_child+marital_status+aboriginal+education+average_hours_worked+self_rated_health+self_rated_mental_health+occupation, data = data1)
+
+
+```
+From the summary of the reg_fianltem, we could see that the p-value of the aboriginal, education, average_hours_worked,occupation
+
+
+#graph of average hours worked
+```{r}
+library(tidyverse)
+ggplot(data = data1, aes(x=`feelings_life`, fill = `average_hours_worked`)) + geom_bar() + labs(title = "different feelings life outcome of different average hours worked")
+```
+We want to find out whether different average hours worked have a linear relationship with the feelings of life index. Firstly, we drew a barplot by these two variables, from the graph we can see that each types of average hours worked are having approximately the same proportion in each feelings of life index, and with the large amount of "NA", in order to find the best fitted model, we decided to drop variable "average_hours_worked" from our final dataset.
+
+#graph of education
+```{r}
+library(tidyverse)
+ggplot(data = data1, aes(x=`feelings_life`, fill = education)) + geom_bar() + labs(title = "different feelings life outcome of different level of education")
+education_model <- lm(data1$feelings_life ~ data1$education)
+summary(education_model)
+```
+We want to find out whether different levels of education have a linear relationship with the feelings of life index. Firstly, we drew a bar plot  by these two variables, from the graph we can see that each level of education is having approximately the same proportion in each feelings of life index. So we initially concluded that it should not have much influence on people's feelings of life index. Next, we offered a linear regression model of these two variables and looked at their summary result. Although the p-value of the total model is less than 0.05, nearly half of the variables' p-value in the data is larger than 0.05. In order to find the best fitted model, we decided to drop variable "education" from our final dataset.
+
+#graph of aboriginal
+```{r, warning=FALSE}
+library(tidyverse)
+ggplot(data = data1, aes(x=`feelings_life`, color = `aboriginal`)) + geom_histogram(binwidth = 0.7) + labs(title = "different feelings of life outcome of whether aboriginal ")
+aboriginal_model <- lm(data$feelings_life~data1$aboriginal)
+summary(aboriginal_model)
+```
+We were predicted that the aboriginal people have less happiness index than the people who are not aborginal. The histogram indicated that the non-aboriginal people have a larger amount of the Happiness index. This shows that aboriginal people are not as happy as the non-aboriginal people. However, in the summary of the regression line, the P-value of both aboriginalNo and aboroginalYes are larger than 0.05, which suggests we do not include the aboriginal variable into the model. This might because there are potential lurking variables to make them have larger p-value. 
+
+###Diagnostic test 
+```{r}
+
+
+reg_final<-lm(feelings_life ~ age+total_children+age_first_child+marital_status+self_rated_health+self_rated_mental_health, data = data1)
+summary(reg_final)
+
+par(mfrow=c(2,2))
+plot(reg_final,1)
+plot(reg_final,2)
+plot(reg_final,3)
+plot(reg_final,5)
+
+```
+
+
+
+```{r}
+ggplot(data=data1, aes(y =`feelings_life`))+geom_bar() + geom_bar(aes(fill = `marital_status`)) + labs(title="Figure 4:marriage vs feelings of life")
+
+reg_final<-lm(feelings_life ~ age+total_children+age_first_child+marital_status+self_rated_health+self_rated_mental_health, data = data1)
+summary(reg_final)
+
+
+
+plot(feelings_life ~ as.factor(self_rated_health), data = data1, main = "Figure 5: self_rated_health vs feelings of life", xlab = "self_rated_health")
+
+plot(feelings_life ~ as.factor(self_rated_mental_health), data = data1, main = "Figure 6:self_rated_mental_health vs feelings of life", xlab = "self_rated_mental_health")
+
+```
+
+
